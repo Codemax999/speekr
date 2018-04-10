@@ -1,31 +1,29 @@
 // @flow
-import React from 'react'
-import { BrowserRouter as Router, Route, Link } from "react-router-dom"
-import Landing from './components/landing/landing'
-import Chat from './components/chat/chat'
+import React, { Component } from 'react'
+import { Tabs } from 'antd'
+import Auth from './components/auth/auth'
+import Register from './components/register/register'
 
-const App = () => (
-  <Router>
-    <div>
+const TabPane = Tabs.TabPane
 
-      {/* Links */}
-      <ul>
-        <li>
-          <Link to='/'>Landing</Link>
-        </li>
-        <li>
-          <Link to='/chat'>Chat</Link>
-        </li>
-      </ul>
+type Props = { }
+type State = { }
 
-      <hr />
+class App extends Component<Props, State> {
 
-      {/* Pages */}
-      <Route exact path='/' component={Landing} />
-      <Route exact path='/chat' component={Chat} />
+  render() {
+    return (
+      <Tabs defaultActiveKey="1">
+        <TabPane tab="SIGN UP" key="1">
+          <Auth />
+        </TabPane>
+        <TabPane tab="LOGIN" key="2">
+          <Register />
+        </TabPane>
+      </Tabs>
+    )
+  }
+}
 
-    </div>
-  </Router>
-)
 
 export default App
