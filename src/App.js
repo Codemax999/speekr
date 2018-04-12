@@ -1,26 +1,22 @@
 // @flow
 import React, { Component } from 'react'
-import { Tabs } from 'antd'
-import Auth from './components/auth/auth'
-import Register from './components/register/register'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import Landing from './components/landing/landing'
+import Chat from './components/chat/chat'
 
-const TabPane = Tabs.TabPane
-
-type Props = { }
-type State = { }
+type Props = {}
+type State = {}
 
 class App extends Component<Props, State> {
 
   render() {
     return (
-      <Tabs defaultActiveKey="1">
-        <TabPane tab="SIGN UP" key="1">
-          <Auth />
-        </TabPane>
-        <TabPane tab="LOGIN" key="2">
-          <Register />
-        </TabPane>
-      </Tabs>
+      <Router>
+        <Switch>
+          <Route exact path='/' component={Landing} />
+          <Route path='/chat' component={Chat} />
+        </Switch>
+      </Router>
     )
   }
 }

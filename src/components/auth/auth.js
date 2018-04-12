@@ -1,5 +1,6 @@
 // @flow
 import React, { Component } from 'react'
+import { Redirect } from 'react-router'
 import { Form, Icon, Input, Button } from 'antd'
 
 const FormItem = Form.Item
@@ -7,18 +8,30 @@ const FormItem = Form.Item
 type Props = {
   form: Object
 }
-type State = {}
+type State = {
+  chat: boolean
+}
 
 class AuthForm extends Component<Props, State> {
+
+  state: State = {
+    chat: false
+  }
 
   handleSubmit = (e: Event) => {
     e.preventDefault()
     this.props.form.validateFields((err, values) => {
-      if (!err) console.log('Received values of form: ', values)
+      this.setState({ chat: true })
+      // if (!err) console.log('Received values of form: ', values)
     })
   }
 
   render() {
+
+    // handle route change on success
+    if (!!this.state.chat) return <Redirect to='/chat' />
+
+    // form details
     const { getFieldDecorator } = this.props.form
     return (
 
@@ -81,5 +94,6 @@ class AuthForm extends Component<Props, State> {
   }
 }
 
-const Auth = Form.create()(AuthForm);
+
+const Auth = Form.create()(AuthForm)
 export default Auth
