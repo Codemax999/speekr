@@ -22,6 +22,8 @@ class Chat extends Component<Props, State> {
 
     return (
       <Layout>
+
+        {/* Username and logout button */}
         <Header style={{ position: 'fixed', width: '100%', padding: 0 }}>
           <nav style={{ 
             background: '#F8F8F8', 
@@ -35,7 +37,7 @@ class Chat extends Component<Props, State> {
               justifyContent: 'space-between',
               padding: '0 20px'
             }}>
-              <div>codemax</div>
+              <div style={{ color: '#2A5BA4', fontWeight: 500, letterSpacing: 0.3 }}>codemax</div>
               <div>
                 <Icon type="ellipsis" onClick={() => this.setState({ landing: true })} />
               </div>
@@ -59,11 +61,13 @@ class Chat extends Component<Props, State> {
             width: '100%'
           }}>
             <Button
-              type="primary"
               shape="circle"
               icon="plus"
               size='large'
               style={{
+                background: '#2699A6',
+                border: 0,
+                color: '#fff',
                 height: 50,
                 width: 50,
                 boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)'
