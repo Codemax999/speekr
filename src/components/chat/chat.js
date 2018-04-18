@@ -1,6 +1,7 @@
 // @flow
 import React, { Component } from 'react'
 import { Redirect } from 'react-router'
+import MessageList from '../message-list/message-list'
 import { Layout, Icon, Button } from 'antd'
 const { Header, Content } = Layout
 
@@ -24,7 +25,7 @@ class Chat extends Component<Props, State> {
       <Layout>
 
         {/* Username and logout button */}
-        <Header style={{ position: 'fixed', width: '100%', padding: 0 }}>
+        <Header style={{ position: 'fixed', width: '100%', padding: 0, zIndex: 2 }}>
           <nav style={{ 
             background: '#F8F8F8', 
             boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
@@ -47,16 +48,16 @@ class Chat extends Component<Props, State> {
         <Content style={{ marginTop: 64 }}>
 
           {/* List of MSGs */}
-          <div style={{ background: '#fff', padding: 24, minHeight: 280 }}>
-            <h2>Content</h2>
-          </div>
+          <section style={{ background: '#fff', padding: 24, minHeight: 280 }}>
+            <MessageList />
+          </section>
 
           {/* Footer with REC btn */}
           <section style={{
             display: 'flex',
             height: 70,
             justifyContent: 'center',
-            position: 'absolute',
+            position: 'fixed',
             bottom: 0,
             width: '100%'
           }}>
