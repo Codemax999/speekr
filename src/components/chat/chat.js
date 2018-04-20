@@ -2,20 +2,34 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router'
 import MessageList from '../message-list/message-list'
-import { Layout, Icon, Button } from 'antd'
+import { Layout, Icon, Button, Modal } from 'antd'
 const { Header, Content } = Layout
 
 type Props = {}
 type State = {
-  landing: boolean
+  landing: boolean,
+  newMessage: boolean,
+  visible: boolean,
+  msg: string
 }
 
 class Chat extends Component<Props, State> {
   
   state: State = {
-    landing: false
+    landing: false,
+    newMessage: false,
+    visible: false,
+    msg: 'Say something...'
   }
-
+  showModal = () => {
+    this.setState({ visible: true })
+  }
+  handleOk = () => {
+    this.setState({ visible: false })
+  }
+  handleCancel = () => {
+    this.setState({ visible: false })
+  }
   render() {
 
     // handle route change on success
@@ -45,10 +59,10 @@ class Chat extends Component<Props, State> {
             </section>
           </nav>
         </Header>
-        <Content style={{ marginTop: 64 }}>
+        <Content>
 
           {/* List of MSGs */}
-          <section style={{ background: '#fff', padding: 24, minHeight: 280 }}>
+          <section style={{ background: '#fff', padding: '64px 24px', minHeight: 280 }}>
             <MessageList />
           </section>
 
@@ -59,22 +73,36 @@ class Chat extends Component<Props, State> {
             justifyContent: 'center',
             position: 'fixed',
             bottom: 0,
-            width: '100%'
+            width: '100%',
+            pointerEvents: 'none'
           }}>
             <Button
               shape="circle"
               icon="plus"
               size='large'
+              onClick={this.showModal}
               style={{
                 background: '#2699A6',
                 border: 0,
                 color: '#fff',
                 height: 50,
                 width: 50,
-                boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)'
+                boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
+                pointerEvents: 'auto'
               }}
             />
           </section> 
+          <Modal
+            title={<span><Icon type='loading' style={{ marginRight: 8 }} />Recording new message</span>}
+            destroyOnClose={true}
+            closable={false}
+            okText='Send'
+            visible={this.state.visible}
+            onOk={this.handleOk}
+            onCancel={this.handleCancel}
+          >
+            <p>{this.state.msg}</p>
+          </Modal>
         </Content>
       </Layout>
     )

@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import Landing from './components/landing/landing'
+import Register from './components/register/register'
 import Auth from './components/auth/auth'
 import Chat from './components/chat/chat'
 
@@ -14,7 +14,7 @@ class App extends Component<Props, State> {
     return (
       <Router>
         <Switch>
-          <Route exact path='/' component={Landing} />
+          <Route exact path='/' component={Register} />
           <Route path='/auth' component={Auth} />
           <Route path='/chat' component={Chat} />
         </Switch>

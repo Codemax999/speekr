@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from 'react'
 import type { MessageType } from '../../types/message'
-import { List, Avatar } from 'antd'
+import { List, Avatar, Button } from 'antd'
 
 const { Item } = List
 
@@ -13,8 +13,15 @@ type State = {}
 class Message extends Component<Props, State> {
   render() {
     const props: Props = this.props
+    const IconText = ({ type, text }) => (
+      <span>
+        <Button shape='circle' icon={type} style={{ marginRight: 8, border: 0, pointerEvents: 'auto' }} />
+        {text}
+      </span>
+    )
+
     return (
-      <Item>
+      <Item actions={[<IconText type="star-o" text="2" />]}>
         <Item.Meta
           avatar={
             <Avatar size='large' style={{ color: '#fff', backgroundColor: '#2A5BA4' }}>
