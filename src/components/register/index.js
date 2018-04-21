@@ -1,7 +1,15 @@
 // @flow
 import React, { Component } from 'react'
 import { Redirect } from 'react-router'
-import { Card, Col, Row, Form, Icon, Input, Button } from 'antd'
+import { 
+  FormContainer, 
+  RegisterRow, 
+  TitleCard, 
+  SubmitButton,
+  AuthLink,
+  AuthIcon
+} from './style'
+import { Col, Form, Input } from 'antd'
 
 const FormItem = Form.Item
 
@@ -38,21 +46,19 @@ class RegisterForm extends Component<Props, State> {
     const { getFieldDecorator } = this.props.form
 
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <FormContainer>
 
         {/* Header */}
-        <Row gutter={20} style={{ width: '100%', margin: '25px 0' }}>
+        <RegisterRow gutter={20} className="title">
           <Col>
-            <Card title="SPEEKR" 
-              bordered={false} 
-              style={{ textAlign: 'center' }}>
-                Speech to text for on the go
-            </Card>
+            <TitleCard title="SPEEKR" bordered={false}>
+              Speech to text for on the go
+            </TitleCard>
           </Col>
-        </Row>
+        </RegisterRow>
 
         {/* Sign up form */}
-        <Row gutter={20} style={{ width: '100%' }}>
+        <RegisterRow gutter={20}>
           <Col>
             <Form
               onSubmit={this.handleSubmit}
@@ -63,7 +69,7 @@ class RegisterForm extends Component<Props, State> {
                   rules: [{ required: true, message: 'Please input your username' }],
                 })(
                   <Input
-                    prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                    prefix={<AuthIcon type="user" />}
                     placeholder="username" />
                 )}
               </FormItem>
@@ -73,7 +79,7 @@ class RegisterForm extends Component<Props, State> {
                   rules: [{ required: true, message: 'Please input your email' }],
                 })(
                   <Input
-                    prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                    prefix={<AuthIcon type="mail" />}
                     placeholder="email" />
                 )}
               </FormItem>
@@ -83,7 +89,7 @@ class RegisterForm extends Component<Props, State> {
                   rules: [{ required: true, message: 'Please input your Password' }],
                 })(
                   <Input
-                    prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                    prefix={<AuthIcon type="lock" />}
                     type="password"
                     placeholder="password" />
                 )}
@@ -94,39 +100,28 @@ class RegisterForm extends Component<Props, State> {
                   rules: [{ required: true, message: 'Please re-enter your Password' }],
                 })(
                   <Input
-                    prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                    prefix={<AuthIcon type="lock" />}
                     type="password"
                     placeholder="re-enter password" />
                 )}
               </FormItem>
 
               <FormItem>
-                <Button
+                <SubmitButton
                   type="primary"
-                  htmlType="submit"
-                  className="login-form-button"
-                  style={{
-                    width: '100%',
-                    background: '#2699A6',
-                    border: 0,
-                    boxShadow: '0 1px 6px rgba(0, 0, 0, 0.2)',
-                    height: 40,
-                    letterSpacing: 0.6,
-                    margin: '30px 0'
-                  }}>
+                  htmlType="submit">
                   CONTINUE
-                </Button>
+                </SubmitButton>
 
                 Or
-                <a onClick={() => this.setState({ auth: true })}
-                  style={{ color: '#2A5BA4', margin: '0 5px'}}>
+                <AuthLink onClick={() => this.setState({ auth: true })}>
                     sign in
-                </a>
+                </AuthLink>
               </FormItem>
             </Form>
           </Col>
-        </Row>
-      </div>
+        </RegisterRow>
+      </FormContainer>
     )
   }
 }

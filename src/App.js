@@ -1,9 +1,9 @@
 // @flow
 import React, { Component } from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import Register from './components/register/register'
-import Auth from './components/auth/auth'
-import Chat from './components/chat/chat'
+import Register from './components/register'
+import Auth from './components/auth'
+import Chat from './components/chat'
 
 type Props = {}
 type State = {}

@@ -1,9 +1,10 @@
 // @flow
 import React, { Component } from 'react'
 import { Redirect } from 'react-router'
+import { StyledHeader, StyledContent, SubmitButton, AuthIcon } from './style'
 import { Layout, Row, Col, Form, Icon, Input, Button } from 'antd'
 
-const { Header, Content } = Layout
+const { Content } = Layout
 const FormItem = Form.Item
 
 type Props = {
@@ -40,33 +41,23 @@ class AuthForm extends Component<Props, State> {
 
     return (
       <Layout>
-        <Header style={{ position: 'fixed', width: '100%', padding: 0 }}>
-          <nav style={{
-            background: '#F8F8F8',
-            boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
-            lineHeight: '64px',
-            width: '100%'
-          }}>
+        <StyledHeader>
+          <section onClick={() => this.setState({ landing: true })}>
+            <Icon type="arrow-left" />
+          </section>
+        </StyledHeader>
 
-            <section style={{ margin: '0 20px' }} onClick={() => this.setState({ landing: true }) }>
-              <Icon type="arrow-left" />
-            </section>
-          </nav>
-        </Header>
-
-        <Content style={{ marginTop: 64, background: '#fff', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <Row gutter={20} style={{ width: '100%', marginTop: 40 }}>
+        <StyledContent>
+          <Row gutter={20}>
             <Col>
-              <Form
-                onSubmit={this.handleSubmit}
-                className="login-form">
+              <Form onSubmit={this.handleSubmit} className="login-form">
 
                 <FormItem>
                   {getFieldDecorator('email', {
                     rules: [{ required: true, message: 'Please input your email' }],
                   })(
                     <Input
-                      prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                      prefix={<AuthIcon type="mail" />}
                       placeholder="email" />
                   )}
                 </FormItem>
@@ -76,33 +67,21 @@ class AuthForm extends Component<Props, State> {
                     rules: [{ required: true, message: 'Please input your Password' }],
                   })(
                     <Input
-                      prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                      prefix={<AuthIcon type="lock" />}
                       type="password"
                       placeholder="password" />
                   )}
                 </FormItem>
 
                 <FormItem>
-                  <Button
-                    type="primary"
-                    htmlType="submit"
-                    className="login-form-button"
-                    style={{
-                      width: '100%',
-                      background: '#2699A6',
-                      border: 0,
-                      boxShadow: '0 1px 6px rgba(0, 0, 0, 0.2)',
-                      height: 40,
-                      letterSpacing: 0.6,
-                      margin: '30px 0'
-                    }}>
+                  <SubmitButton type="primary" htmlType="submit">
                     CONTINUE
-                  </Button>
+                  </SubmitButton>
                 </FormItem>
               </Form>
             </Col>
           </Row>
-        </Content>
+        </StyledContent>
       </Layout>
     )
   }

@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react'
-import Message from '../message/message'
+import Message from '../message'
 import type { MessageType } from '../../types/message'
 import { List } from 'antd'
 
