@@ -11,6 +11,7 @@ export const pageHeader = `
   background: #f8f8f8;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
   line-height: 64px;
+  top: 0;
   z-index: 2;
   & section {
     margin: 0 20px;
@@ -37,5 +38,5 @@ export const authBtn = `
   box-shadow: 0 1px 6px rgba(0,0,0,0.2);
   height: 40px;
   letter-spacing: 0.6px;
-  margin: 30px 0;
+  margin: 25px 0 10px 0;
 `

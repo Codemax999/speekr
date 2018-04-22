@@ -2,6 +2,10 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router'
 import { 
+  StyledSider,
+  NewMessageButton,
+  StyledAvatar,
+  StyledLayout,
   StyledHeader, 
   Messages,
   Footer,
@@ -9,7 +13,7 @@ import {
   ModalIcon
 } from './style'
 import MessageList from '../message-list'
-import { Layout, Icon, Modal } from 'antd'
+import { Layout, Icon, Modal, Button } from 'antd'
 const { Content } = Layout
 
 type Props = {}
@@ -28,6 +32,7 @@ class Chat extends Component<Props, State> {
     visible: false,
     msg: 'Say something...'
   }
+
   showModal = () => {
     this.setState({ visible: true })
   }
@@ -37,15 +42,16 @@ class Chat extends Component<Props, State> {
   handleCancel = () => {
     this.setState({ visible: false })
   }
+
   render() {
 
     // handle route change on success
     if (!!this.state.landing) return <Redirect to='/' />
 
     return (
-      <Layout>
+      <StyledLayout>
 
-        {/* Username and logout button */}
+        {/* Username and logout button (small screen) */}
         <StyledHeader>
           <section className="chatHeader">
             <div>codemax</div>
@@ -54,6 +60,22 @@ class Chat extends Component<Props, State> {
             </div>
           </section>
         </StyledHeader>
+
+        {/* Sider for (large screen) */}
+        <StyledSider width={250}>
+          <section>
+            <StyledAvatar>C</StyledAvatar>
+            <NewMessageButton 
+              icon="plus" 
+              size='large' 
+              onClick={this.showModal}
+              ghost>
+              New Message
+            </NewMessageButton>
+          </section>
+        </StyledSider>
+
+        {/* Messages */}
         <Content>
 
           {/* List of MSGs */}
@@ -61,14 +83,7 @@ class Chat extends Component<Props, State> {
             <MessageList />
           </Messages>
 
-          {/* Footer with REC btn */}
-          <Footer>
-            <FabBtn
-              shape="circle"
-              icon="plus"
-              onClick={this.showModal}
-            />
-          </Footer> 
+          {/* Record new message modal */}
           <Modal
             title={<span><ModalIcon type='loading' />Recording new message</span>}
             destroyOnClose={true}
@@ -81,7 +96,16 @@ class Chat extends Component<Props, State> {
             <p>{this.state.msg}</p>
           </Modal>
         </Content>
-      </Layout>
+
+        {/* Footer with REC btn (small screen) */}
+        <Footer>
+          <FabBtn
+            shape="circle"
+            icon="plus"
+            onClick={this.showModal}
+          />
+        </Footer> 
+      </StyledLayout>
     )
   }
 }

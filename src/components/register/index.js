@@ -47,80 +47,81 @@ class RegisterForm extends Component<Props, State> {
 
     return (
       <FormContainer>
-
-        {/* Header */}
-        <RegisterRow gutter={20} className="title">
-          <Col>
-            <TitleCard title="SPEEKR" bordered={false}>
-              Speech to text for on the go
+        <section>
+          {/* Header */}
+          <RegisterRow gutter={20} className="title">
+            <Col>
+              <TitleCard title="SPEEKR" bordered={false}>
+                Speech to text for on the go
             </TitleCard>
-          </Col>
-        </RegisterRow>
+            </Col>
+          </RegisterRow>
 
-        {/* Sign up form */}
-        <RegisterRow gutter={20}>
-          <Col>
-            <Form
-              onSubmit={this.handleSubmit}
-              className="login-form">
+          {/* Sign up form */}
+          <RegisterRow gutter={20}>
+            <Col>
+              <Form
+                onSubmit={this.handleSubmit}
+                className="login-form">
 
-              <FormItem>
-                {getFieldDecorator('userName', {
-                  rules: [{ required: true, message: 'Please input your username' }],
-                })(
-                  <Input
-                    prefix={<AuthIcon type="user" />}
-                    placeholder="username" />
-                )}
-              </FormItem>
+                <FormItem>
+                  {getFieldDecorator('userName', {
+                    rules: [{ required: true, message: 'Please input your username' }],
+                  })(
+                    <Input
+                      prefix={<AuthIcon type="user" />}
+                      placeholder="username" />
+                  )}
+                </FormItem>
 
-              <FormItem>
-                {getFieldDecorator('email', {
-                  rules: [{ required: true, message: 'Please input your email' }],
-                })(
-                  <Input
-                    prefix={<AuthIcon type="mail" />}
-                    placeholder="email" />
-                )}
-              </FormItem>
+                <FormItem>
+                  {getFieldDecorator('email', {
+                    rules: [{ required: true, message: 'Please input your email' }],
+                  })(
+                    <Input
+                      prefix={<AuthIcon type="mail" />}
+                      placeholder="email" />
+                  )}
+                </FormItem>
 
-              <FormItem>
-                {getFieldDecorator('password', {
-                  rules: [{ required: true, message: 'Please input your Password' }],
-                })(
-                  <Input
-                    prefix={<AuthIcon type="lock" />}
-                    type="password"
-                    placeholder="password" />
-                )}
-              </FormItem>
+                <FormItem>
+                  {getFieldDecorator('password', {
+                    rules: [{ required: true, message: 'Please input your Password' }],
+                  })(
+                    <Input
+                      prefix={<AuthIcon type="lock" />}
+                      type="password"
+                      placeholder="password" />
+                  )}
+                </FormItem>
 
-              <FormItem>
-                {getFieldDecorator('passwordValid', {
-                  rules: [{ required: true, message: 'Please re-enter your Password' }],
-                })(
-                  <Input
-                    prefix={<AuthIcon type="lock" />}
-                    type="password"
-                    placeholder="re-enter password" />
-                )}
-              </FormItem>
+                <FormItem>
+                  {getFieldDecorator('passwordValid', {
+                    rules: [{ required: true, message: 'Please re-enter your Password' }],
+                  })(
+                    <Input
+                      prefix={<AuthIcon type="lock" />}
+                      type="password"
+                      placeholder="re-enter password" />
+                  )}
+                </FormItem>
 
-              <FormItem>
-                <SubmitButton
-                  type="primary"
-                  htmlType="submit">
-                  CONTINUE
+                <FormItem>
+                  <SubmitButton
+                    type="primary"
+                    htmlType="submit">
+                    CONTINUE
                 </SubmitButton>
 
-                Or
+                  Or
                 <AuthLink onClick={() => this.setState({ auth: true })}>
                     sign in
                 </AuthLink>
-              </FormItem>
-            </Form>
-          </Col>
-        </RegisterRow>
+                </FormItem>
+              </Form>
+            </Col>
+          </RegisterRow>
+        </section>
       </FormContainer>
     )
   }

@@ -1,7 +1,13 @@
 // @flow
 import React, { Component } from 'react'
 import { Redirect } from 'react-router'
-import { StyledHeader, StyledContent, SubmitButton, AuthIcon } from './style'
+import { 
+  FormContainer,
+  StyledHeader, 
+  StyledContent, 
+  SubmitButton, 
+  AuthIcon 
+} from './style'
 import { Layout, Row, Col, Form, Icon, Input, Button } from 'antd'
 
 const { Content } = Layout
@@ -40,49 +46,51 @@ class AuthForm extends Component<Props, State> {
     const { getFieldDecorator } = this.props.form
 
     return (
-      <Layout>
-        <StyledHeader>
-          <section onClick={() => this.setState({ landing: true })}>
-            <Icon type="arrow-left" />
-          </section>
-        </StyledHeader>
+      <FormContainer>
+        <section>
+          <StyledHeader>
+            <section onClick={() => this.setState({ landing: true })}>
+              <Icon type="arrow-left" />
+            </section>
+          </StyledHeader>
 
-        <StyledContent>
-          <Row gutter={20}>
-            <Col>
-              <Form onSubmit={this.handleSubmit} className="login-form">
+          <StyledContent>
+            <Row gutter={20}>
+              <Col>
+                <Form onSubmit={this.handleSubmit} className="login-form">
 
-                <FormItem>
-                  {getFieldDecorator('email', {
-                    rules: [{ required: true, message: 'Please input your email' }],
-                  })(
-                    <Input
-                      prefix={<AuthIcon type="mail" />}
-                      placeholder="email" />
-                  )}
-                </FormItem>
+                  <FormItem>
+                    {getFieldDecorator('email', {
+                      rules: [{ required: true, message: 'Please input your email' }],
+                    })(
+                      <Input
+                        prefix={<AuthIcon type="mail" />}
+                        placeholder="email" />
+                    )}
+                  </FormItem>
 
-                <FormItem>
-                  {getFieldDecorator('password', {
-                    rules: [{ required: true, message: 'Please input your Password' }],
-                  })(
-                    <Input
-                      prefix={<AuthIcon type="lock" />}
-                      type="password"
-                      placeholder="password" />
-                  )}
-                </FormItem>
+                  <FormItem>
+                    {getFieldDecorator('password', {
+                      rules: [{ required: true, message: 'Please input your Password' }],
+                    })(
+                      <Input
+                        prefix={<AuthIcon type="lock" />}
+                        type="password"
+                        placeholder="password" />
+                    )}
+                  </FormItem>
 
-                <FormItem>
-                  <SubmitButton type="primary" htmlType="submit">
-                    CONTINUE
+                  <FormItem>
+                    <SubmitButton type="primary" htmlType="submit">
+                      CONTINUE
                   </SubmitButton>
-                </FormItem>
-              </Form>
-            </Col>
-          </Row>
-        </StyledContent>
-      </Layout>
+                  </FormItem>
+                </Form>
+              </Col>
+            </Row>
+          </StyledContent>
+        </section>
+      </FormContainer>
     )
   }
 }
