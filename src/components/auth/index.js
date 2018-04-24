@@ -1,6 +1,7 @@
 // @flow
 import React, { Component } from 'react'
 import { Redirect } from 'react-router'
+import { signIn } from '../../services/firebase'
 import { 
   FormContainer,
   StyledHeader, 
@@ -8,9 +9,8 @@ import {
   SubmitButton, 
   AuthIcon 
 } from './style'
-import { Layout, Row, Col, Form, Icon, Input, Button } from 'antd'
+import { Row, Col, Form, Icon, Input } from 'antd'
 
-const { Content } = Layout
 const FormItem = Form.Item
 
 type Props = {
@@ -18,21 +18,34 @@ type Props = {
 }
 type State = {
   landing: boolean,
-  chat: boolean
+  chat: boolean,
+  errorMsg: string
 }
 
 class AuthForm extends Component<Props, State> {
 
   state: State = {
     landing: false,
-    chat: false
+    chat: false,
+    errorMsg: ''
   }
 
   handleSubmit = (e: Event) => {
     e.preventDefault()
     this.props.form.validateFields((err, values) => {
-      this.setState({ chat: true })
-      // if (!err) console.log('Received values of form: ', values)
+      
+      // validate for no errors
+      if (!err) {
+
+        // attempt login, redirect to chat and show any errors
+        const { email, password } = values
+        signIn(email, password)
+          .then((res: Object | string) => {
+            if (res === 'auth/user-not-found') this.setState({ errorMsg: 'User not found' })
+            else if (res === 'auth/wrong-password') this.setState({ errorMsg: 'Incorrect email or password' })
+            else this.setState({ chat: true })
+          })
+      }
     })
   }
 
@@ -85,6 +98,9 @@ class AuthForm extends Component<Props, State> {
                       CONTINUE
                   </SubmitButton>
                   </FormItem>
+
+                  {/* Error Message */}
+                  <div>{this.state.errorMsg}</div>
                 </Form>
               </Col>
             </Row>

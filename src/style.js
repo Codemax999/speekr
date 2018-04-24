@@ -39,4 +39,7 @@ export const authBtn = `
   height: 40px;
   letter-spacing: 0.6px;
   margin: 25px 0 10px 0;
+  &:hover, &:active, &:focus {
+    background: #44C5D4 !important;
+  }
 `

@@ -1,6 +1,7 @@
 // @flow
 import React, { Component } from 'react'
 import { Redirect } from 'react-router'
+import { registerNewUser } from '../../services/firebase'
 import { 
   FormContainer, 
   RegisterRow, 
@@ -18,21 +19,35 @@ type Props = {
 }
 type State = {
   chat: boolean,
-  auth: boolean
+  auth: boolean,
+  errorMsg: string
 }
 
 class RegisterForm extends Component<Props, State> {
 
   state: State = {
     chat: false,
-    auth: false
+    auth: false,
+    errorMsg: ''
   }
 
   handleSubmit = (e: Event) => {
     e.preventDefault()
     this.props.form.validateFields((err, values) => {
-      this.setState({ chat: true })
-      // if (!err) console.log('Received values of form: ', values)
+
+      // validate for no errors
+      if (!err) {
+
+        // email password and username
+        const { email, password, username } = values
+        registerNewUser(email, password, username)
+          .then((res: Object | string) => {
+
+            // validate for taken emails
+            if (res === 'auth/email-already-in-use') this.setState({ errorMsg: 'Email taken' })
+            else this.setState({ chat: true })
+          })
+      }
     })
   }
 
@@ -65,7 +80,7 @@ class RegisterForm extends Component<Props, State> {
                 className="login-form">
 
                 <FormItem>
-                  {getFieldDecorator('userName', {
+                  {getFieldDecorator('username', {
                     rules: [{ required: true, message: 'Please input your username' }],
                   })(
                     <Input
@@ -76,7 +91,7 @@ class RegisterForm extends Component<Props, State> {
 
                 <FormItem>
                   {getFieldDecorator('email', {
-                    rules: [{ required: true, message: 'Please input your email' }],
+                    rules: [{ required: true, type: 'email', message: 'Please enter valid email' }],
                   })(
                     <Input
                       prefix={<AuthIcon type="mail" />}
@@ -86,23 +101,12 @@ class RegisterForm extends Component<Props, State> {
 
                 <FormItem>
                   {getFieldDecorator('password', {
-                    rules: [{ required: true, message: 'Please input your Password' }],
+                    rules: [{ required: true, min: 6, message: 'Please input a password of at least 6 characters' }],
                   })(
                     <Input
                       prefix={<AuthIcon type="lock" />}
                       type="password"
                       placeholder="password" />
-                  )}
-                </FormItem>
-
-                <FormItem>
-                  {getFieldDecorator('passwordValid', {
-                    rules: [{ required: true, message: 'Please re-enter your Password' }],
-                  })(
-                    <Input
-                      prefix={<AuthIcon type="lock" />}
-                      type="password"
-                      placeholder="re-enter password" />
                   )}
                 </FormItem>
 
@@ -118,6 +122,9 @@ class RegisterForm extends Component<Props, State> {
                     sign in
                 </AuthLink>
                 </FormItem>
+
+                {/* Error Messages */}
+                <div>{this.state.errorMsg}</div>
               </Form>
             </Col>
           </RegisterRow>

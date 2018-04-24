@@ -1,9 +1,11 @@
 // @flow
 import React, { Component } from 'react'
 import { Redirect } from 'react-router'
+import { currentUser, signOut } from '../../services/firebase'
 import { 
   StyledSider,
   NewMessageButton,
+  StyledUserInfo,
   StyledAvatar,
   StyledLayout,
   StyledHeader, 
@@ -13,26 +15,42 @@ import {
   ModalIcon
 } from './style'
 import MessageList from '../message-list'
-import { Layout, Icon, Modal, Button } from 'antd'
+import { Layout, Icon, Modal } from 'antd'
 const { Content } = Layout
 
-type Props = {}
 type State = {
   landing: boolean,
   newMessage: boolean,
   visible: boolean,
-  msg: string
+  msg: string,
+  username: string
 }
 
-class Chat extends Component<Props, State> {
+class Chat extends Component<{}, State> {
   
   state: State = {
     landing: false,
     newMessage: false,
     visible: false,
-    msg: 'Say something...'
+    msg: 'Say something...',
+    username: ''
   }
 
+  componentDidMount() {
+    const user = currentUser()
+    console.log(user)
+    if (user) this.setState({ username: user.displayName})
+  }
+
+  // --- Sign Out ---
+  signOutUser = () => {
+
+    // sign out and redirect to landing page
+    signOut().then(() => this.setState({ landing: true }))
+  }
+
+
+  // --- New Message Modal ---
   showModal = () => {
     this.setState({ visible: true })
   }
@@ -45,8 +63,11 @@ class Chat extends Component<Props, State> {
 
   render() {
 
+    // state
+    const { landing, username, visible, msg } = this.state
+
     // handle route change on success
-    if (!!this.state.landing) return <Redirect to='/' />
+    if (!!landing) return <Redirect to='/' />
 
     return (
       <StyledLayout>
@@ -54,9 +75,9 @@ class Chat extends Component<Props, State> {
         {/* Username and logout button (small screen) */}
         <StyledHeader>
           <section className="chatHeader">
-            <div>codemax</div>
+            <div>SPEEKR</div>
             <div>
-              <Icon type="ellipsis" onClick={() => this.setState({ landing: true })} />
+              <Icon type="ellipsis" onClick={this.signOutUser} />
             </div>
           </section>
         </StyledHeader>
@@ -64,7 +85,10 @@ class Chat extends Component<Props, State> {
         {/* Sider for (large screen) */}
         <StyledSider width={250}>
           <section>
-            <StyledAvatar>C</StyledAvatar>
+            <StyledUserInfo>
+              <StyledAvatar>C</StyledAvatar>
+              <h3>{username}</h3>
+            </StyledUserInfo>
             <NewMessageButton 
               icon="plus" 
               size='large' 
@@ -89,11 +113,11 @@ class Chat extends Component<Props, State> {
             destroyOnClose={true}
             closable={false}
             okText='Send'
-            visible={this.state.visible}
+            visible={visible}
             onOk={this.handleOk}
             onCancel={this.handleCancel}
           >
-            <p>{this.state.msg}</p>
+            <p>{msg}</p>
           </Modal>
         </Content>
 

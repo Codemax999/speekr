@@ -25,9 +25,16 @@ export const StyledSider = styled(Sider)`
   }
 `
 
-export const NewMessageButton = styled(Button)`
-  border-color: #fff !important;
-  color: #fff !important;
+export const StyledUserInfo = styled.div`
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 150px;
+  & h3 {
+    color: #fff;
+    letter-spacing: 0.5px;
+  }
 `
 
 export const StyledAvatar = styled(Avatar)`
@@ -41,6 +48,11 @@ export const StyledAvatar = styled(Avatar)`
   font-size: 35px;
   height: 100px;
   width: 100px;
+`
+
+export const NewMessageButton = styled(Button) `
+  border-color: #fff !important;
+  color: #fff !important;
 `
 
 export const StyledHeader = styled(Header)`
