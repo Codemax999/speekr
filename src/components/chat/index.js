@@ -1,6 +1,8 @@
 // @flow
 import React, { Component } from 'react'
 import { Redirect } from 'react-router'
+import { connect } from 'react-redux'
+import { updateUser } from '../../actions/user'
 import { currentUser, signOut } from '../../services/firebase'
 import { 
   StyledSider,
@@ -26,7 +28,12 @@ type State = {
   username: string
 }
 
-class Chat extends Component<{}, State> {
+type Props = {
+  user: Object,
+  onUpdateUser: string => void
+}
+
+class Chat extends Component<Props, State> {
   
   state: State = {
     landing: false,
@@ -37,9 +44,7 @@ class Chat extends Component<{}, State> {
   }
 
   componentDidMount() {
-    const user = currentUser()
-    console.log(user)
-    if (user) this.setState({ username: user.displayName})
+    console.log(this.props.user)
   }
 
   // --- Sign Out ---
@@ -92,7 +97,7 @@ class Chat extends Component<{}, State> {
             <NewMessageButton 
               icon="plus" 
               size='large' 
-              onClick={this.showModal}
+              onClick={() => this.props.onUpdateUser('Cody')}
               ghost>
               New Message
             </NewMessageButton>
@@ -134,4 +139,12 @@ class Chat extends Component<{}, State> {
   }
 }
 
-export default Chat
+const mapStatesToProps = (state) => ({
+  user: state.user
+})
+
+const mapActionsToProps = {
+  onUpdateUser: updateUser
+}
+
+export default connect(mapStatesToProps, mapActionsToProps)(Chat)

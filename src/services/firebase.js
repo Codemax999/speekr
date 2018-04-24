@@ -2,6 +2,7 @@
 import * as firebase from 'firebase'
 
 // --- Initialize Firebase ---
+export let currentUser
 export const initialize = () => {
 
   var config = {
@@ -14,11 +15,12 @@ export const initialize = () => {
   }
 
   firebase.initializeApp(config)
+  currentUser = firebase.auth().onAuthStateChanged(user => user)
+  // firebase.auth().onAuthStateChanged(user => {
+  //   console.log(user)
+  //   currentUser = user
+  // })
 }
-
-
-// --- Current User ---
-export const currentUser = (): firebase.User => firebase.auth().currentUser
 
 
 // --- Register New User ---

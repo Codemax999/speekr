@@ -8,8 +8,10 @@
     "flow-bin": "^0.69.0",
     "react": "^16.3.0",
     "react-dom": "^16.3.0",
+    "react-redux": "^5.0.7",
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.1.2",
+    "redux": "^4.0.0",
     "styled-components": "^3.2.5"
   },
   "scripts": {
@@ -19,5 +21,7 @@
     "eject": "react-scripts eject",
     "flow": "flow"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "redux-devtools": "^3.4.1"
+  }
 }
