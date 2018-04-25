@@ -1,8 +1,11 @@
 // @flow
+import { connect } from 'react-redux'
+import { updateUser } from '../actions/user'
 import * as firebase from 'firebase'
 
+export default firebase 
+
 // --- Initialize Firebase ---
-export let currentUser
 export const initialize = () => {
 
   var config = {
@@ -15,13 +18,7 @@ export const initialize = () => {
   }
 
   firebase.initializeApp(config)
-  currentUser = firebase.auth().onAuthStateChanged(user => user)
-  // firebase.auth().onAuthStateChanged(user => {
-  //   console.log(user)
-  //   currentUser = user
-  // })
 }
-
 
 // --- Register New User ---
 export const registerNewUser = (email: string, password: string, username: string): firebase.Promise<void | string> => {
@@ -40,7 +37,6 @@ export const signIn = (email: string, password: string): firebase.Promise<fireba
   return firebase.auth()
     .signInWithEmailAndPassword(email, password)
     .catch(({ code }) => code)
-
 }
 
 

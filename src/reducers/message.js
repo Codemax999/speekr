@@ -1,3 +1,3 @@
-export default function productsReducer(state = [], action) {
+export default function messageReducer(state = [], action) {
   return state
 }

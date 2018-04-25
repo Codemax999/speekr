@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { Redirect } from 'react-router'
 import { connect } from 'react-redux'
 import { updateUser } from '../../actions/user'
-import { currentUser, signOut } from '../../services/firebase'
+import { signOut } from '../../services/firebase'
 import { 
   StyledSider,
   NewMessageButton,
@@ -24,13 +24,11 @@ type State = {
   landing: boolean,
   newMessage: boolean,
   visible: boolean,
-  msg: string,
-  username: string
+  msg: string
 }
 
 type Props = {
-  user: Object,
-  onUpdateUser: string => void
+  user: Object
 }
 
 class Chat extends Component<Props, State> {
@@ -43,12 +41,8 @@ class Chat extends Component<Props, State> {
     username: ''
   }
 
-  componentDidMount() {
-    console.log(this.props.user)
-  }
-
   // --- Sign Out ---
-  signOutUser = () => {
+  onSignOut = () => {
 
     // sign out and redirect to landing page
     signOut().then(() => this.setState({ landing: true }))
@@ -69,7 +63,8 @@ class Chat extends Component<Props, State> {
   render() {
 
     // state
-    const { landing, username, visible, msg } = this.state
+    const { landing, visible, msg } = this.state
+    const { user } = this.props
 
     // handle route change on success
     if (!!landing) return <Redirect to='/' />
@@ -82,27 +77,30 @@ class Chat extends Component<Props, State> {
           <section className="chatHeader">
             <div>SPEEKR</div>
             <div>
-              <Icon type="ellipsis" onClick={this.signOutUser} />
+              <Icon type="ellipsis" onClick={this.onSignOut} />
             </div>
           </section>
         </StyledHeader>
 
         {/* Sider for (large screen) */}
-        <StyledSider width={250}>
-          <section>
-            <StyledUserInfo>
-              <StyledAvatar>C</StyledAvatar>
-              <h3>{username}</h3>
-            </StyledUserInfo>
-            <NewMessageButton 
-              icon="plus" 
-              size='large' 
-              onClick={() => this.props.onUpdateUser('Cody')}
-              ghost>
-              New Message
+        {
+          !!user &&
+          <StyledSider width={250}>
+            <section>
+              <StyledUserInfo>
+                <StyledAvatar>C</StyledAvatar>
+                <h3>{user.displayName}</h3>
+              </StyledUserInfo>
+              <NewMessageButton
+                icon="plus"
+                size='large'
+                onClick={this.showModal}
+                ghost>
+                New Message
             </NewMessageButton>
-          </section>
-        </StyledSider>
+            </section>
+          </StyledSider>
+        }
 
         {/* Messages */}
         <Content>
@@ -139,7 +137,7 @@ class Chat extends Component<Props, State> {
   }
 }
 
-const mapStatesToProps = (state) => ({
+const mapStateToProps = (state) => ({
   user: state.user
 })
 
@@ -147,4 +145,4 @@ const mapActionsToProps = {
   onUpdateUser: updateUser
 }
 
-export default connect(mapStatesToProps, mapActionsToProps)(Chat)
+export default connect(mapStateToProps, mapActionsToProps)(Chat)

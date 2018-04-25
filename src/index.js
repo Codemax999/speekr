@@ -3,23 +3,21 @@ import ReactDOM from 'react-dom'
 import App from './App'
 import registerServiceWorker from './registerServiceWorker'
 import { initialize } from './services/firebase'
-
 import { combineReducers, createStore } from 'redux'
 import { Provider } from 'react-redux'
-
-import productsReducer from './reducers/message'
+import messageReducer from './reducers/message'
 import userReducer from './reducers/user'
 
 const allReducers = combineReducers({
-  products: productsReducer,
+  messages: messageReducer,
   user: userReducer
 })
 
 const store = createStore(
   allReducers, 
   {
-    products: [{name: 'iPhone'}],
-    user: 'Micheal'
+    messages: [],
+    user: null
   },
   window.devToolsExtension && window.devToolsExtension()
 )
