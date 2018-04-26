@@ -2,5 +2,6 @@
 export type MessageType = {
   id: number | string, 
   username: string,
-  message: string
+  message: string,
+  likeCount: number
 }

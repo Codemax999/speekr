@@ -1,7 +1,7 @@
 // @flow
-import { connect } from 'react-redux'
-import { updateUser } from '../actions/user'
 import * as firebase from 'firebase'
+import '@firebase/firestore'
+import { updateMessages } from '../actions/messages'
 
 export default firebase 
 
@@ -20,7 +20,9 @@ export const initialize = () => {
   firebase.initializeApp(config)
 }
 
-// --- Register New User ---
+
+// --- User ---
+// register
 export const registerNewUser = (email: string, password: string, username: string): firebase.Promise<void | string> => {
 
   // create user, add username to user and redirect to chat
@@ -30,8 +32,7 @@ export const registerNewUser = (email: string, password: string, username: strin
     .catch(({ code }) => code)
 }
 
-
-// --- Sign In ---
+// authenticate
 export const signIn = (email: string, password: string): firebase.Promise<firebase.user | string> => {
   
   return firebase.auth()
@@ -40,9 +41,48 @@ export const signIn = (email: string, password: string): firebase.Promise<fireba
 }
 
 
-// --- Sign Out ---
+// sign out
 export const signOut = (): firebase.Promise<void | string> => {
+
   return firebase.auth()
     .signOut()
     .catch(({ code }) => code)
+}
+
+
+// --- Messages ---
+// create
+export const addMessage = (message: string) => {
+
+  firebase.firestore().collection('messages').add({
+    message,
+    username: firebase.auth().currentUser.displayName,
+    likeCount: 0
+  })
+  .catch((err: string) => console.error(err))
+}
+
+// load messages
+export const getMessages = (dispatch: Function) => {
+
+  // get messages and listen for changes
+  let allMessages = []
+  firebase.firestore().collection('messages')
+    .onSnapshot((snap) => {
+
+      // add each message to all messages
+      snap.forEach((doc) => {
+        allMessages = [...allMessages, doc.data()]
+      })
+
+      // dispatch messages
+      dispatch(updateMessages(allMessages))
+    })
+}
+
+// detach listener 
+export const detachListener = () => {
+
+  const unsubscribe = firebase.firestore().collection('messages').onSnapshot(() => {})
+  unsubscribe()
 }

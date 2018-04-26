@@ -5,7 +5,7 @@ import registerServiceWorker from './registerServiceWorker'
 import { initialize } from './services/firebase'
 import { combineReducers, createStore } from 'redux'
 import { Provider } from 'react-redux'
-import messageReducer from './reducers/message'
+import messageReducer from './reducers/messages'
 import userReducer from './reducers/user'
 
 const allReducers = combineReducers({
@@ -15,10 +15,7 @@ const allReducers = combineReducers({
 
 const store = createStore(
   allReducers, 
-  {
-    messages: [],
-    user: null
-  },
+  {},
   window.devToolsExtension && window.devToolsExtension()
 )
 

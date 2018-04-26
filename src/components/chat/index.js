@@ -2,8 +2,12 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router'
 import { connect } from 'react-redux'
-import { updateUser } from '../../actions/user'
-import { signOut } from '../../services/firebase'
+import { 
+  signOut, 
+  addMessage, 
+  getMessages, 
+  detachListener 
+} from '../../services/firebase'
 import { 
   StyledSider,
   NewMessageButton,
@@ -28,7 +32,9 @@ type State = {
 }
 
 type Props = {
-  user: Object
+  user: Object,
+  onGetMessages: void => void,
+  messages: Object[]
 }
 
 class Chat extends Component<Props, State> {
@@ -37,8 +43,20 @@ class Chat extends Component<Props, State> {
     landing: false,
     newMessage: false,
     visible: false,
-    msg: 'Say something...',
+    msg: 'Say another something..',
     username: ''
+  }
+
+  componentDidMount() {
+
+    // get list of messages
+    this.props.onGetMessages()
+  }
+
+  componentWillUnmount() {
+
+    // stop listening for data changes
+    detachListener()
   }
 
   // --- Sign Out ---
@@ -50,13 +68,22 @@ class Chat extends Component<Props, State> {
 
 
   // --- New Message Modal ---
+  // show
   showModal = () => {
+
     this.setState({ visible: true })
   }
+
+  // add message
   handleOk = () => {
+
     this.setState({ visible: false })
+    addMessage(this.state.msg)
   }
+
+  // cancel message
   handleCancel = () => {
+
     this.setState({ visible: false })
   }
 
@@ -64,7 +91,7 @@ class Chat extends Component<Props, State> {
 
     // state
     const { landing, visible, msg } = this.state
-    const { user } = this.props
+    const { user, messages } = this.props
 
     // handle route change on success
     if (!!landing) return <Redirect to='/' />
@@ -85,6 +112,7 @@ class Chat extends Component<Props, State> {
         {/* Sider for (large screen) */}
         {
           !!user &&
+
           <StyledSider width={250}>
             <section>
               <StyledUserInfo>
@@ -97,7 +125,7 @@ class Chat extends Component<Props, State> {
                 onClick={this.showModal}
                 ghost>
                 New Message
-            </NewMessageButton>
+          </NewMessageButton>
             </section>
           </StyledSider>
         }
@@ -107,7 +135,7 @@ class Chat extends Component<Props, State> {
 
           {/* List of MSGs */}
           <Messages>
-            <MessageList />
+            <MessageList messages={messages} />
           </Messages>
 
           {/* Record new message modal */}
@@ -118,8 +146,7 @@ class Chat extends Component<Props, State> {
             okText='Send'
             visible={visible}
             onOk={this.handleOk}
-            onCancel={this.handleCancel}
-          >
+            onCancel={this.handleCancel}>
             <p>{msg}</p>
           </Modal>
         </Content>
@@ -138,11 +165,14 @@ class Chat extends Component<Props, State> {
 }
 
 const mapStateToProps = (state) => ({
-  user: state.user
+  user: state.user,
+  messages: state.messages.messages
 })
 
-const mapActionsToProps = {
-  onUpdateUser: updateUser
-}
+const mapDispatchToProps = (dispatch) => ({
+  onGetMessages() {
+    getMessages(dispatch)
+  }
+})
 
-export default connect(mapStateToProps, mapActionsToProps)(Chat)
+export default connect(mapStateToProps, mapDispatchToProps)(Chat)
