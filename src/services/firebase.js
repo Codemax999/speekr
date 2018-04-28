@@ -1,6 +1,7 @@
 // @flow
 import * as firebase from 'firebase'
 import '@firebase/firestore'
+import moment from 'moment'
 import { updateMessages } from '../actions/messages'
 
 export default firebase 
@@ -57,7 +58,7 @@ export const addMessage = (message: string) => {
   firebase.firestore().collection('messages').add({
     message,
     username: firebase.auth().currentUser.displayName,
-    likeCount: 0
+    createdAt: moment().valueOf()
   })
   .catch((err: string) => console.error(err))
 }
@@ -66,9 +67,11 @@ export const addMessage = (message: string) => {
 export const getMessages = (dispatch: Function) => {
 
   // get messages and listen for changes
-  let allMessages = []
   firebase.firestore().collection('messages')
+    .orderBy('createdAt')
     .onSnapshot((snap) => {
+
+      let allMessages = []
 
       // add each message to all messages
       snap.forEach((doc) => {

@@ -10,17 +10,23 @@ type Props = {
 }
 
 class Message extends Component<Props> {
+
+  readMessage = (message: string) => {
+
+    // text to speech
+    const msg = new SpeechSynthesisUtterance(message)
+    window.speechSynthesis.speak(msg)
+  }
+
   render() {
-    const { likeCount, username, message } = this.props.data
-    const IconText = ({ type, text }) => (
-      <span>
-        <LikeButton shape='circle' icon={type} />
-        {text}
-      </span>
-    )
+
+    const { username, message } = this.props.data
 
     return (
-      <Item actions={[<IconText type="star-o" text={likeCount} />]}>
+      <Item 
+        actions={[<LikeButton shape='circle' icon='caret-right' />]}
+        onClick={() => this.readMessage(message)}>
+
         <Item.Meta
           avatar={
             <StyledAvatar size='large'>

@@ -1,8 +1,8 @@
 // @flow
 import styled from 'styled-components'
 import { colorPrimary, pageHeader, colorSecondary } from '../../style'
-import { Layout, Button, Icon, Avatar } from 'antd'
-const { Header, Content, Sider } = Layout
+import { Layout, Button, Icon } from 'antd'
+const { Header, Sider } = Layout
 
 export const StyledLayout = styled(Layout)`
   height: 100vh;
@@ -37,15 +37,16 @@ export const StyledUserInfo = styled.div`
   }
 `
 
-export const StyledAvatar = styled(Avatar)`
+export const StyledAvatar = styled.div`
   background: ${colorSecondary};
   border-radius: 50%;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
   color: #fff;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 35px;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 45px;
+  font-weight: 600;
   height: 100px;
   width: 100px;
 `
@@ -59,14 +60,10 @@ export const StyledHeader = styled(Header)`
   ${pageHeader}
 `
 
-export const StyledContent = styled(Content)`
-  height:
-`
-
 export const Messages = styled.section`
   background: #fff;
-  min-height: 280px;
-  padding: 64px 24px;
+  margin-bottom: 44px;
+  padding: 75px 24px 20px 24px;
 `
 
 export const Footer = styled.section`

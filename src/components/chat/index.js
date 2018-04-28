@@ -24,11 +24,17 @@ import MessageList from '../message-list'
 import { Layout, Icon, Modal } from 'antd'
 const { Content } = Layout
 
+// --- Speech Recognition ---
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+const recognition = new SpeechRecognition()
+recognition.continuous = true
+
 type State = {
   landing: boolean,
   newMessage: boolean,
   visible: boolean,
-  msg: string
+  msg: string,
+  recordingStatus: string
 }
 
 type Props = {
@@ -43,8 +49,9 @@ class Chat extends Component<Props, State> {
     landing: false,
     newMessage: false,
     visible: false,
-    msg: 'Say another something..',
-    username: ''
+    msg: 'Say another something...',
+    username: '',
+    recordingStatus: ''
   }
 
   componentDidMount() {
@@ -71,27 +78,92 @@ class Chat extends Component<Props, State> {
   // show
   showModal = () => {
 
+    const self = this
+
+    // display modal and start recording
     this.setState({ visible: true })
+    recognition.start()
+
+    // record start
+    recognition.onstart = () => {
+      self.setState({ recordingStatus: 'Recording new message' })
+    }
+
+    // record end
+    recognition.onspeechend = () => {
+      self.setState({ recordingStatus: 'Finished recording' })
+    }
+
+    // record error
+    recognition.onerror = (event: Object) => {
+      if (event.error === 'no-speech') {
+        self.setState({ recordingStatus: 'No speech detected' })
+      }
+    }
+
+    // record result
+    recognition.onresult = (event: Object) => {
+
+      // captured text
+      const index = event.resultIndex
+      const transcript = event.results[index][0].transcript
+
+      // prevent repeat on some mobile devices
+      const repeat = (index === 1 && transcript === event.results[0][0].transcript)
+      if (!repeat) self.onTextChange(transcript)
+    }
+  }
+
+  onTextChange = (transcript: string) => {
+
+    // new message
+    let newMsg = ''
+    const { msg } = this.state
+    const initText = 'Say another something...'
+    newMsg = msg === initText ? msg.replace(initText, '') : msg
+
+    // update state
+    this.setState({ msg: `${newMsg} ${transcript}` })
   }
 
   // add message
   handleOk = () => {
 
-    this.setState({ visible: false })
+    recognition.stop()
+    this.setState({ 
+      visible: false,
+      msg: 'Say another something...',
+      recordingStatus: ''
+    })
     addMessage(this.state.msg)
   }
 
   // cancel message
   handleCancel = () => {
 
-    this.setState({ visible: false })
+    recognition.stop()
+    this.setState({ 
+      visible: false,
+      msg: 'Say another something...',
+      recordingStatus: ''
+    })
   }
 
   render() {
 
     // state
-    const { landing, visible, msg } = this.state
+    const { landing, visible, msg, recordingStatus } = this.state
     const { user, messages } = this.props
+
+    // modal icon
+    const getIcon = (): string => {
+
+      let icon = ''
+      icon = recordingStatus === 'Recording new message' ? 'loading' : icon
+      icon = recordingStatus === 'Finished recording' ? 'check-circle-o' : icon
+      icon = recordingStatus === 'No speech detected' ? 'warning' : icon
+      return icon
+    }
 
     // handle route change on success
     if (!!landing) return <Redirect to='/' />
@@ -116,7 +188,7 @@ class Chat extends Component<Props, State> {
           <StyledSider width={250}>
             <section>
               <StyledUserInfo>
-                <StyledAvatar>C</StyledAvatar>
+                <StyledAvatar>{user.displayName[0].toUpperCase()}</StyledAvatar>
                 <h3>{user.displayName}</h3>
               </StyledUserInfo>
               <NewMessageButton
@@ -140,7 +212,11 @@ class Chat extends Component<Props, State> {
 
           {/* Record new message modal */}
           <Modal
-            title={<span><ModalIcon type='loading' />Recording new message</span>}
+            title={
+              <span>
+                <ModalIcon type={getIcon()} />
+                {recordingStatus}
+              </span>}
             destroyOnClose={true}
             closable={false}
             okText='Send'
@@ -165,7 +241,7 @@ class Chat extends Component<Props, State> {
 }
 
 const mapStateToProps = (state) => ({
-  user: state.user,
+  user: state.user.user,
   messages: state.messages.messages
 })
 
