@@ -165,8 +165,8 @@ class Chat extends Component<Props, State> {
       return icon
     }
 
-    // handle route change on success
-    if (!!landing) return <Redirect to='/' />
+    // handle route change on success or no user logged in
+    if (!!landing || localStorage.getItem('isLoggedIn') === null) return <Redirect to='/' />
 
     return (
       <StyledLayout>

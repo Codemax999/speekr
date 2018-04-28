@@ -4,7 +4,7 @@ import '@firebase/firestore'
 import moment from 'moment'
 import { updateMessages } from '../actions/messages'
 
-export default firebase 
+export default firebase
 
 // --- Initialize Firebase ---
 export const initialize = () => {
@@ -30,6 +30,7 @@ export const registerNewUser = (email: string, password: string, username: strin
   return firebase.auth()
     .createUserWithEmailAndPassword(email, password)
     .then((user: firebase.User) => user.updateProfile({ displayName: username }))
+    .then(() => localStorage.setItem('isLoggedIn', 'true'))
     .catch(({ code }) => code)
 }
 
@@ -38,6 +39,7 @@ export const signIn = (email: string, password: string): firebase.Promise<fireba
   
   return firebase.auth()
     .signInWithEmailAndPassword(email, password)
+    .then(() => localStorage.setItem('isLoggedIn', 'true'))
     .catch(({ code }) => code)
 }
 
@@ -47,6 +49,7 @@ export const signOut = (): firebase.Promise<void | string> => {
 
   return firebase.auth()
     .signOut()
+    .then(() => localStorage.removeItem('isLoggedIn'))
     .catch(({ code }) => code)
 }
 

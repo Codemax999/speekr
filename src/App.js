@@ -29,6 +29,7 @@ class App extends Component<Props> {
           <Route exact path='/' component={Register} />
           <Route path='/auth' component={Auth} />
           <Route path='/chat' component={Chat} />
+          <Route path='*' component={Register} />
         </Switch>
       </Router>
     )

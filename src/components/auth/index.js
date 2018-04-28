@@ -111,5 +111,5 @@ class AuthForm extends Component<Props, State> {
   }
 }
 
-const Auth = Form.create()(AuthForm);
+const Auth = Form.create()(AuthForm)
 export default Auth
