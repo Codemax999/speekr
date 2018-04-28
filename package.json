@@ -1,6 +1,6 @@
 {
   "name": "speekr",
-  "homepage": "https://codemax999.github.io/speekr",
+  "homepage": "https://codemax999.github.io/speekr/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -21,9 +21,11 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "flow": "flow"
+    "flow": "flow",
+    "deploy": "gh-pages -d build"
   },
   "devDependencies": {
+    "gh-pages": "^1.1.0",
     "redux-devtools": "^3.4.1"
   }
 }
