@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './App'
-// import registerServiceWorker from './registerServiceWorker'
+import registerServiceWorker from './registerServiceWorker'
 import { initialize } from './services/firebase'
 import { combineReducers, createStore } from 'redux'
 import { Provider } from 'react-redux'
@@ -21,4 +21,4 @@ const store = createStore(
 
 initialize()
 ReactDOM.render(<Provider store={store}><App /></Provider>, document.getElementById('root'))
-// registerServiceWorker()
+registerServiceWorker()
